@@ -1,0 +1,123 @@
+/* General container styling */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Navigation bar styling */
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0f7fa; /* Lighter color for the navbar */
+  padding: 14px 0;
+  margin-bottom: 20px;
+}
+
+.navbar a, .navbar button {
+  color: #333;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+  font-size: 17px;
+  transition: background-color 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar a:hover, .navbar button:hover {
+  background-color: #b2ebf2; /* Slightly darker color for hover */
+  color: black;
+}
+
+.navbar a.active {
+  background-color: #0288d1; /* Blue color for the active link */
+  color: white;
+}
+
+/* Task table styling */
+.taskTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.taskTable th, .taskTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.taskTable th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.taskTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.taskTable tr:hover {
+  background-color: #ddd;
+}
+
+/* Form styling */
+.formContainer {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.formButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.formButton:hover {
+  background-color: #0056b3;
+}
+
+/* Center the login form */
+.centeredFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 70px); /* Full viewport height minus the navbar height */
+}
+
+.loginForm {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
