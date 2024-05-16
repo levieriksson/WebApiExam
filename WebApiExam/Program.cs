@@ -9,10 +9,43 @@ using System;
 using System.Text;
 using WebApiExam.Contexts;
 using WebApiExam.Models.Entity;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext
+//Swagger Auth
+builder.Services.AddSwaggerGen(c =>
+{
+    //Have to write Bearer: JWT-Token
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Test01", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                          {
+                              Reference = new OpenApiReference
+                              {
+                                  Type = ReferenceType.SecurityScheme,
+                                  Id = "Bearer"
+                              }
+                          },
+                         new string[] {}
+                    }
+                });
+});
+
+//DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -44,10 +77,11 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+//Cors
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", builder =>
-        builder.WithOrigins("http://example.com") // Adjust the allowed origins
+    options.AddPolicy("AllowFrontend", builder =>
+        builder.WithOrigins("http://localhost:3000") // Adjust the allowed origins
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials());
@@ -59,7 +93,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -67,10 +100,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

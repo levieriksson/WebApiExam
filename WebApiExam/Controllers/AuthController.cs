@@ -58,11 +58,11 @@ namespace WebApiExam.Controllers
                 var token = TokenGenerator.Generate(
                     new ClaimsIdentity(new[]
                     {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.UserName)
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Name, user.UserName)
                     }),
-                    DateTime.UtcNow.AddDays(7) // Token expiration
+                    DateTime.UtcNow.AddHours(1) // Token expiration
                 );
 
                 return Ok(new { Username = user.UserName, Token = token });

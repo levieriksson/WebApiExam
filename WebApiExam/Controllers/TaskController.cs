@@ -21,20 +21,23 @@ namespace WebApiExam.Controllers
         }
 
         // GET: /Tasks
-        [HttpGet]
         [Authorize]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasks()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var tasks = await _context.Tasks
-                .Select(t => new TaskDto
-                {
-                    TaskId = t.TaskId,
-                    Title = t.Title,
-                    Description = t.Description,
-                    DueDate = t.DueDate,
-                    Priority = t.Priority,
-                    Status = t.Status
-                }).ToListAsync();
+                                      .Where(t => t.UserId == userId)
+                                      .Select(t => new TaskDto
+                                      {
+                                          TaskId = t.TaskId,
+                                          Title = t.Title,
+                                          Description = t.Description,
+                                          DueDate = t.DueDate,
+                                          Priority = t.Priority,
+                                          Status = t.Status
+                                      }).ToListAsync();
 
             return Ok(tasks);
         }
@@ -44,16 +47,19 @@ namespace WebApiExam.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskDto>> GetTaskById(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var task = await _context.Tasks
-                .Select(t => new TaskDto
-                {
-                    TaskId = t.TaskId,
-                    Title = t.Title,
-                    Description = t.Description,
-                    DueDate = t.DueDate,
-                    Priority = t.Priority,
-                    Status = t.Status
-                }).FirstOrDefaultAsync(t => t.TaskId == id);
+                                     .Where(t => t.TaskId == id && t.UserId == userId)
+                                     .Select(t => new TaskDto
+                                     {
+                                         TaskId = t.TaskId,
+                                         Title = t.Title,
+                                         Description = t.Description,
+                                         DueDate = t.DueDate,
+                                         Priority = t.Priority,
+                                         Status = t.Status
+                                     }).FirstOrDefaultAsync();
 
             if (task == null)
             {
@@ -66,18 +72,20 @@ namespace WebApiExam.Controllers
         // POST: /Tasks
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<TaskDto>> CreateTask([FromBody] CreateTaskDto createTaskDto)
+        public async Task<ActionResult<TaskDto>> CreateTask(CreateTaskDto createTaskDto)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var task = new TaskEntity
             {
+                UserId = userId,
                 Title = createTaskDto.Title,
                 Description = createTaskDto.Description,
                 DueDate = createTaskDto.DueDate,
                 Priority = createTaskDto.Priority,
                 Status = createTaskDto.Status,
-                //Hardcoded, fix later. 
-                //UserId = "c266e967-3988-4331-8edb-b1fba8cc0a37"
-                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) // Set the UserId to the current user's ID
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
             _context.Tasks.Add(task);

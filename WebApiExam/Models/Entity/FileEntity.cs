@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApiExam.Models.Entity
 {
@@ -8,16 +9,27 @@ namespace WebApiExam.Models.Entity
         [Key]
         public int FileId { get; set; }
 
-        // Change UserId to string to match UserEntity.Id
+        [Required]
         public string UserId { get; set; }
+
+        [ForeignKey("UserId")]
         public virtual UserEntity User { get; set; }
 
+        [Required]
         public string Filename { get; set; }
-        public string FilePath { get; set; }
+
+        [Required]
         public string FileType { get; set; }
+
+        [Required]
         public long FileSize { get; set; }
+
+        [Required]
+        public byte[] Data { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+    
 
     }
 }
