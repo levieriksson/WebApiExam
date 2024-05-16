@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApiExam.Models.Dto;
@@ -17,17 +18,21 @@ namespace WebApiExam.Controllers
             _userManager = userManager;
         }
 
+        [Authorize]
+        // Use string for ID to match the string type of UserEntity.Id
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserEntity>> GetUserById(int id)
+        public async Task<ActionResult<UserEntity>> GetUserById(string id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            // Use FindByIdAsync with a string ID
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            return Ok(user);
-        }
 
+            return user;
+        }
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<UserEntity>> PostUser(CreateUserDto createUserDto)
         {
@@ -44,7 +49,9 @@ namespace WebApiExam.Controllers
                 return BadRequest(result.Errors);
             }
 
-            return CreatedAtAction("GetUserById", new { id = user.Id }, user);
+            // Use nameof to refer to the GetUserById action correctly
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
     }
-}
+    }
+

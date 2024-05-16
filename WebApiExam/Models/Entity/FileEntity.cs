@@ -8,7 +8,8 @@ namespace WebApiExam.Models.Entity
         [Key]
         public int FileId { get; set; }
 
-        public int UserId { get; set; }
+        // Change UserId to string to match UserEntity.Id
+        public string UserId { get; set; }
         public virtual UserEntity User { get; set; }
 
         public string Filename { get; set; }
@@ -17,6 +18,6 @@ namespace WebApiExam.Models.Entity
         public long FileSize { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        
+
     }
 }

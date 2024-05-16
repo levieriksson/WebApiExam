@@ -5,29 +5,33 @@ using WebApiExam.Models.Entity;
 
 namespace WebApiExam.Contexts
 {
-    public class ApplicationDbContext : IdentityDbContext<UserEntity, IdentityRole<int>, int>
+    public class AppDbContext : IdentityDbContext<UserEntity, IdentityRole, string>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
         {
         }
 
         public DbSet<FileEntity> Files { get; set; }
         public DbSet<TaskEntity> Tasks { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            // Configure relationships
-            modelBuilder.Entity<FileEntity>()
+            // Configure the FileEntity relationship
+            builder.Entity<FileEntity>()
                 .HasOne(f => f.User)
                 .WithMany(u => u.Files)
-                .HasForeignKey(f => f.UserId);
+                .HasForeignKey(f => f.UserId)
+                .IsRequired(true);  // Adjust based on your requirements
 
-            modelBuilder.Entity<TaskEntity>()
+            // Configure the TaskEntity relationship
+            builder.Entity<TaskEntity>()
                 .HasOne(t => t.User)
                 .WithMany(u => u.Tasks)
-                .HasForeignKey(t => t.UserId);
+                .HasForeignKey(t => t.UserId)
+                .IsRequired(true);  // Adjust based on your requirements
         }
     }
 }

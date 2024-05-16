@@ -1,83 +1,65 @@
-using WebApiExam.Contexts;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
-using Microsoft.Extensions.Configuration;
+using WebApiExam.Contexts;
 using WebApiExam.Models.Entity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
-//DBs
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-//repos
-builder.Services.AddIdentity<UserEntity, IdentityRole>(options =>
-{ options.User.RequireUniqueEmail = true; })
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+
+// Add DbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add ASP.NET Core Identity
+builder.Services.AddIdentity<UserEntity, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-//services
-#region commented
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-//{ options.User.RequireUniqueEmail = true; })
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
+// Configure JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = true;  // Set to true in production
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenValidation:SecretKey"])),
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["TokenValidation:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["TokenValidation:Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
-////Auth
-//#region Authenticate
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-//{ options.User.RequireUniqueEmail = true; })
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+        builder.WithOrigins("http://example.com") // Adjust the allowed origins
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials());
+});
 
-//builder.Services.AddAuthentication(x =>
-//{
-//    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-
-//})
-//.AddJwtBearer(x =>
-//{
-//    x.Events = new JwtBearerEvents
-//    {
-//        OnTokenValidated = context =>
-//        {
-//            //if (string.IsNullOrEmpty(context?.Principal?.Identity?.Name))
-//            //    context?.Fail("Unauthorized");
-
-//            return Task.CompletedTask;
-//        }
-//    };
-
-//    x.RequireHttpsMetadata = true;
-//    x.SaveToken = true;
-//    x.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidIssuer = builder.Configuration.GetSection("TokenValidation").GetValue<string>("Issuer")!,
-//        ValidateAudience = true,
-//        ValidAudience = builder.Configuration.GetSection("TokenValidation").GetValue<string>("Audience")!,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        IssuerSigningKey = new SymmetricSecurityKey(
-//            Encoding.UTF8.GetBytes(builder.Configuration.GetSection("TokenValidation").GetValue<string>("SecretKey")!))
-//    };
-//});
-//#endregion
-#endregion
-
+// Add controllers
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -85,6 +67,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();

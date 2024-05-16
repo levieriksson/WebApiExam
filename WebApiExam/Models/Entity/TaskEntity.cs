@@ -7,7 +7,7 @@ namespace WebApiExam.Models.Entity
         [Key]
         public int TaskId { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual UserEntity User { get; set; }
 
         public string Title { get; set; }
@@ -17,6 +17,6 @@ namespace WebApiExam.Models.Entity
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        
+
     }
 }
