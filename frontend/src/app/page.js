@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './tasks/Tasks.module.css'; // Import CSS module
+import fetcher from '@/utils/fetcher';
 
 const Home = () => {
   return (

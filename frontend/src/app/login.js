@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import fetcher from '../../utils/fetcher';
 import styles from '../tasks/Tasks.module.css'; // Import CSS module
+import fetchdata from '@/utils/fetchdata';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const Login = () => {
     };
 
     try {
-      const response = await fetcher('/auth/login', {
+      const response = await fetchdata('/auth/login', {
         method: 'POST',
         body: JSON.stringify(loginData),
       });

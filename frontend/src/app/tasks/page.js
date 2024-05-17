@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import fetcher from '../../utils/fetcher';
+import fetch from '../../utils/fetch';
 import TaskList from '../../components/TaskList';
 import AddTaskForm from '../../components/AddTaskForm';
 import styles from './Tasks.module.css'; // Import CSS module
