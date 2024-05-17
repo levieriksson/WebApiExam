@@ -5,18 +5,24 @@ import { useAuth } from '../context/AuthContext';
 import styles from '../app/tasks/Tasks.module.css'; // Ensure this path is correct
 
 const NavBar = () => {
-  const { isLoggedIn, logout } = useAuth();
-  const router = useRouter();
+  const authContext = useAuth();
+  console.log('NavBar - authContext:', authContext); // Debugging line
 
-  if (typeof isLoggedIn === 'undefined') {
-    console.error('useAuth() returned undefined');
+  if (!authContext) {
+    console.error('NavBar - useAuth() returned undefined');
     return null;
   }
 
+  const { isLoggedIn, logout } = authContext;
+  const router = useRouter();
+
   const handleLogout = () => {
+    console.log('NavBar - handleLogout called');
     logout();
     router.push('/');
   };
+
+  console.log('NavBar - isLoggedIn:', isLoggedIn); // Debugging line
 
   return (
     <div className={styles.navbar}>

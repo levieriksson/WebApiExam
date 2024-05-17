@@ -1,8 +1,7 @@
 import React from 'react';
-import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBar.js';
 import { AuthProvider } from '../context/AuthContext';
-import Login from '../app/login/page';
-import fetcher from '../utils/fetcher';
+import '../app/globals.css';
 
 function MyApp({ Component, pageProps }) {
   return (
