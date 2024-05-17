@@ -4,10 +4,21 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import styles from '../app/tasks/Tasks.module.css'; // Import CSS module
+import styles from '../app/tasks/Tasks.module.css';
+
+const auth = useAuth();
+
+if (!auth) {
+  console.error('useAuth() returned undefined');
+  // Handle this error case, maybe by returning null or showing an error message
+  return null;
+}
+
+const [isLoggedIn, logout] = auth;
 
 const NavBar = () => {
   const { isLoggedIn, logout } = useAuth();
+
   const router = useRouter();
 
   const handleLogout = () => {

@@ -1,25 +1,20 @@
-'use client';
-
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useAuth } from '../../context/AuthContext';
 import fetcher from '../../utils/fetcher';
-import styles from '../tasks/Tasks.module.css'; // Import CSS module
+import styles from '../tasks/Tasks.module.css'; // Adjust if necessary
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { login } = useAuth();
+  const login = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const loginData = {
-      email,
-      password,
-    };
+    const loginData = { email, password };
 
     try {
       const response = await fetcher('/auth/login', {
@@ -27,9 +22,9 @@ const Login = () => {
         body: JSON.stringify(loginData),
       });
 
-      document.cookie = `jwt=${response.token}; path=/`; // Store JWT token in cookies
-      login(); // Update the context state
-      router.push('/'); // Redirect to home page
+      document.cookie = `jwt=${response.token}; path=/`;
+      login();
+      router.push('/');
     } catch (error) {
       setError(error.message);
     }
@@ -60,7 +55,7 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit" className={styles.formButton}>Login</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );

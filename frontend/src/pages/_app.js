@@ -1,18 +1,15 @@
-'use client';
-
-import React from 'react';
-import Layout from '../app/layout';
+import NavBar from '@/components/NavBar';
 import { AuthProvider } from '../context/AuthContext';
-import '../app/globals.css';
+import Login from '@/app/login';
+import fetcher from '@/utils/fetcher';
 
-const MyApp = ({ Component, pageProps }) => {
+function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <NavBar></NavBar>
+      <Component {...pageProps} />
     </AuthProvider>
   );
-};
+}
 
 export default MyApp;
