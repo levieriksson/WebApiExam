@@ -1,65 +1,67 @@
 'use client';
+
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 import { useAuth } from '../../context/AuthContext';
 import fetcher from '../../utils/fetcher';
-import styles from '../tasks/Tasks.module.css'; // Adjust if necessary
+import styles from './login.module.css';
 
-const Login = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const router = useRouter();
-  const { login } = useAuth();
+  const [error, setError] = useState('');
+  const { setIsAuthenticated } = useAuth();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const loginData = { email, password };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
     try {
-      const response = await fetcher('/auth/login', {
+      const response = await fetcher('/api/Auth/login', {
         method: 'POST',
-        body: JSON.stringify(loginData),
+        body: JSON.stringify({ email, password }),
       });
 
-      document.cookie = `jwt=${response.token}; path=/`;
-      login();
-      router.push('/');
+      Cookies.set('token', response.token);
+      setIsAuthenticated(true);
+      console.log('Login successful');
     } catch (error) {
-      setError(error.message);
+      console.error('Login error:', error.message);
+      setError('Invalid email or password');
     }
   };
 
   return (
-    <div className={styles.centeredFormContainer}>
-      <form onSubmit={handleSubmit} className={styles.loginForm}>
-        <h1>Login</h1>
-        {error && <p>Error: {error}</p>}
-        <div className={styles.formGroup}>
-          <label className={styles.formLabel}>Email</label>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <h1 className={styles.formTitle}>Login</h1>
+        {error && <p className={styles.error}>{error}</p>}
+        <div className={styles.field}>
+          <label htmlFor="email" className={styles.label}>Email:</label>
           <input
             type="email"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={styles.formInput}
+            className={styles.input}
             required
           />
         </div>
-        <div className={styles.formGroup}>
-          <label className={styles.formLabel}>Password</label>
+        <div className={styles.field}>
+          <label htmlFor="password" className={styles.label}>Password:</label>
           <input
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={styles.formInput}
+            className={styles.input}
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className={styles.button}>Login</button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default LoginPage;

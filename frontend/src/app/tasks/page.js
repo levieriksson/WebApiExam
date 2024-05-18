@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import fetch from '../../utils/fetch';
 import TaskList from '../../components/TaskList';
 import AddTaskForm from '../../components/AddTaskForm';
 import styles from './Tasks.module.css'; // Import CSS module
+import fetcher from '../../utils/fetcher';
 
-const Tasks = () => {
+const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -28,6 +28,10 @@ const Tasks = () => {
     setShowAddTaskForm(!showAddTaskForm);
   };
 
+  const handleTaskAdded = (newTask) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  };
+
   return (
     <div className={styles.container}>
       <h1>Tasks</h1>
@@ -36,9 +40,9 @@ const Tasks = () => {
       <button onClick={handleToggleAddTaskForm} className={styles.formButton}>
         {showAddTaskForm ? 'Hide Form' : 'Add New Task'}
       </button>
-      {showAddTaskForm && <AddTaskForm onTaskAdded={(newTask) => setTasks((prevTasks) => [...prevTasks, newTask])} />}
+      {showAddTaskForm && <AddTaskForm onTaskAdded={handleTaskAdded} />}
     </div>
   );
 };
 
-export default Tasks;
+export default TasksPage;

@@ -1,14 +1,12 @@
+// src/app/page.js
 import React from 'react';
-import styles from './tasks/Tasks.module.css'; // Import CSS module
-import fetcher from '@/utils/fetcher';
 
-const Home = () => {
+const HomePage = () => {
   return (
-    <div className={styles.container}>
-      <h1>Welcome to My App</h1>
-      <p>This is the home page.</p>
+    <div>
+      <h1>Welcome Levi</h1>
     </div>
   );
 };
 
-export default Home;
+export default HomePage;

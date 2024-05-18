@@ -1,41 +1,44 @@
+// src/components/NavBar.js
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthContext';
-import styles from '../app/tasks/Tasks.module.css'; // Ensure this path is correct
+import styles from './NavBar.module.css';
 
 const NavBar = () => {
-  const authContext = useAuth();
-  console.log('NavBar - authContext:', authContext); // Debugging line
-
-  if (!authContext) {
-    console.error('NavBar - useAuth() returned undefined');
-    return null;
-  }
-
-  const { isLoggedIn, logout } = authContext;
-  const router = useRouter();
-
-  const handleLogout = () => {
-    console.log('NavBar - handleLogout called');
-    logout();
-    router.push('/');
-  };
-
-  console.log('NavBar - isLoggedIn:', isLoggedIn); // Debugging line
+  const { isAuthenticated, logout } = useAuth();
 
   return (
-    <div className={styles.navbar}>
-      {isLoggedIn ? (
-        <>
-          <Link href="/" className={styles.navLink}>Home</Link>
-          <Link href="/tasks" className={styles.navLink}>Tasks</Link>
-          <button onClick={handleLogout} className={styles.navButton}>Logout</button>
-        </>
-      ) : (
-        <Link href="/login" className={styles.navLink}>Login</Link>
+    <nav className={styles.navbar}>
+      <h2>Navigation Bar</h2>
+      <ul className={styles.navLinks}>
+        <li>
+          <Link href="/" className={styles.navLink}>
+            Home
+          </Link>
+        </li>
+        {isAuthenticated && (
+          <>
+            <li>
+              <Link href="/tasks" className={styles.navLink}>
+                Tasks
+              </Link>
+            </li>
+            <li>
+              <Link href="/files" className={styles.navLink}>
+                Files
+              </Link>
+            </li>
+          </>
+        )}
+      </ul>
+      {isAuthenticated && (
+        <div className={styles.navbarRight}>
+          <button onClick={logout} className={`${styles.navLink} ${styles.navButton}`}>
+            Logout
+          </button>
+        </div>
       )}
-    </div>
+    </nav>
   );
 };
 

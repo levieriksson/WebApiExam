@@ -1,14 +1,12 @@
+// src/pages/_app.js
 import React from 'react';
-import NavBar from '../components/NavBar.js';
-import { AuthProvider } from '../context/AuthContext';
-import '../app/globals.css';
+import Layout from '../app/layout';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <AuthProvider>
-      <NavBar />
+    <Layout>
       <Component {...pageProps} />
-    </AuthProvider>
+    </Layout>
   );
 }
 
