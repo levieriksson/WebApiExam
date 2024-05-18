@@ -5,12 +5,14 @@ import Cookies from 'js-cookie';
 import { useAuth } from '../../context/AuthContext';
 import fetcher from '../../utils/fetcher';
 import styles from './login.module.css';
+import {useRouter} from 'next/navigation';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { setIsAuthenticated } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +26,7 @@ const LoginPage = () => {
 
       Cookies.set('token', response.token);
       setIsAuthenticated(true);
+      router.push('/tasks');
       console.log('Login successful');
     } catch (error) {
       console.error('Login error:', error.message);
