@@ -1,0 +1,127 @@
+'use client';
+import React, { useState, useEffect } from 'react';
+import fetcher from '@/utils/fetcher';
+import styles from './Files.module.css';
+
+const FilesPage = () => {
+  const [files, setFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await fetcher('/files');
+        setFiles(response);
+        console.log('Fetched files:', response);
+      } catch (error) {
+        console.error('Error fetching files:', error.message);
+      }
+    };
+    fetchFiles();
+  }, []);
+
+  const handleFileUpload = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      await fetcher('/files/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      setSelectedFile(null);
+      const response = await fetcher('/files');
+      setFiles(response);
+    } catch (error) {
+      console.error('Error uploading file:', error.message);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files[0];
+    setSelectedFile(file);
+  };
+
+  const handleFileDownload = async (fileId) => {
+    try {
+      const response = await fetcher(`/files/download/${fileId}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = response.headers.get('Content-Disposition').split('filename=')[1];
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download error:', error.message);
+    }
+  };
+
+  const formatFileSize = (size) => {
+    if (size < 1024) return `${size} bytes`;
+    else if (size < 1048576) return `${(size / 1024).toFixed(2)} KB`;
+    else return `${(size / 1048576).toFixed(2)} MB`;
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1>Files</h1>
+      <div
+        className={`${styles.dropzone} ${dragging ? styles.dragging : ''}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <p>Drag & Drop files here or click to select files</p>
+        <input
+          type="file"
+          onChange={(e) => setSelectedFile(e.target.files[0])}
+          id="fileInput"
+        />
+        <label htmlFor="fileInput" className={styles.uploadButton}>
+          Choose File
+        </label>
+        <button onClick={handleFileUpload} className={styles.uploadButton}>
+          Upload
+        </button>
+      </div>
+      {files.length > 0 ? (
+        <ul className={styles.fileList}>
+          {files.map((file) => (
+            <li key={file.fileId} className={styles.fileItem}>
+              <span className={styles.fileName}>{file.filename}</span>
+              <span className={styles.fileSize}>{formatFileSize(file.fileSize)}</span>
+              <span className={styles.fileType}>{file.fileType}</span>
+              <button
+                onClick={() => handleFileDownload(file.fileId)}
+                className={styles.downloadButton}
+              >
+                Download
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No files available</p>
+      )}
+    </div>
+  );
+};
+
+export default FilesPage;

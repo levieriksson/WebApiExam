@@ -1,15 +1,20 @@
-'use client';
+// src/utils/fetcher.js
 import Cookies from 'js-cookie';
 
 const fetcher = async (url, options = {}) => {
   const token = Cookies.get('token');
+  const headers = {
+    'Authorization': token ? `Bearer ${token}` : '',
+    ...options.headers
+  };
+
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
+
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : '',
-      ...options.headers
-    }
+    headers,
   });
 
   if (!response.ok) {
