@@ -2,78 +2,69 @@
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-  }
-  
-  .dropzone {
+}
+
+.dropzone {
     border: 2px dashed #007bff;
     border-radius: 5px;
-    padding: 20px;
+    padding: 40px;
     text-align: center;
     margin-bottom: 20px;
     background-color: #f9f9f9;
     cursor: pointer;
-  }
-  
-  .dropzone p {
-    margin: 0;
-    font-size: 1rem;
-    color: #007bff;
-  }
-  
-  .dropzone input {
-    display: none;
-  }
-  
-  .dropzone label {
-    display: inline-block;
-    margin-top: 10px;
+}
+
+.fileSelected {
+    background-color: #d3d3d3;
+}
+
+.uploadControls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.uploadButton {
     background-color: #007bff;
     color: white;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .dropzone button {
-    margin-left: 10px;
-    background-color: #007bff;
-    color: white;
-    padding: 8px 16px;
     border: none;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  .fileList {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.fileList {
     list-style-type: none;
     padding: 0;
-  }
-  
-  .fileItem {
+}
+
+.fileItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
     margin-bottom: 10px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f8f8f8;
-  }
-  
-  .fileName, .fileSize, .fileType {
+}
+
+.fileName, .fileSize, .fileType {
     flex: 1;
-  }
-  
-  .fileName {
+}
+
+.fileName {
     flex: 2;
-  }
-  
-  .downloadButton {
+}
+
+.downloadButton {
     background-color: #28a745;
     color: white;
-    padding: 5px 10px;
     border: none;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
+    text-align: center;
+}

@@ -82,24 +82,28 @@ const FilesPage = () => {
   return (
     <div className={styles.container}>
       <h1>Files</h1>
-      <div
-        className={`${styles.dropzone} ${dragging ? styles.dragging : ''}`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <p>Drag & Drop files here or click to select files</p>
-        <input
-          type="file"
-          onChange={(e) => setSelectedFile(e.target.files[0])}
-          id="fileInput"
-        />
+      <div className={styles.uploadControls}>
         <label htmlFor="fileInput" className={styles.uploadButton}>
           Choose File
         </label>
         <button onClick={handleFileUpload} className={styles.uploadButton}>
           Upload
         </button>
+      </div>
+      <div
+        className={`${styles.dropzone} ${dragging ? styles.dragging : ''} ${selectedFile ? styles.fileSelected : ''}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <p>Drag & Drop files here or click to select files</p>
+        {selectedFile && <p>Selected file: {selectedFile.name}</p>}
+        <input
+          type="file"
+          onChange={(e) => setSelectedFile(e.target.files[0])}
+          style={{ display: 'none' }}
+          id="fileInput"
+        />
       </div>
       {files.length > 0 ? (
         <ul className={styles.fileList}>
