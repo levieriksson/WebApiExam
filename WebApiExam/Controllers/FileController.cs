@@ -69,5 +69,18 @@ namespace WebApiExam.Controllers
 
             return File(fileEntity.Data, fileEntity.FileType, fileEntity.Filename);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFiles()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var files = await _context.Files
+                .Where(f => f.UserId == userId)
+                .Select(f => new { f.FileId, f.Filename, f.FileType, f.FileSize, f.CreatedAt })
+                .ToListAsync();
+
+            return Ok(files);
+        }
+
     }
 }

@@ -21,6 +21,7 @@ namespace WebApiExam.Models.Entity
         [Required]
         public string FileType { get; set; }
 
+
         [Required]
         public long FileSize { get; set; }
 
