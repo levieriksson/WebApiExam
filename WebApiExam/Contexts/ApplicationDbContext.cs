@@ -32,6 +32,15 @@ namespace WebApiExam.Contexts
                 .WithMany(u => u.Tasks)
                 .HasForeignKey(t => t.UserId)
                 .IsRequired(true);  // Adjust based on your requirements
+
+            // Configure the enum conversions
+            builder.Entity<TaskEntity>()
+                .Property(e => e.Priority)
+                .HasConversion<string>();
+
+            builder.Entity<TaskEntity>()
+                .Property(e => e.Status)
+                .HasConversion<string>();
         }
     }
 }

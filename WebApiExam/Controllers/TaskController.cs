@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebApiExam.Contexts;
+using WebApiExam.Enums;
 using WebApiExam.Models.Dto;
 using WebApiExam.Models.Entity;
 
@@ -76,14 +77,26 @@ namespace WebApiExam.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            // Convert string to enum for Priority
+            if (!Enum.TryParse(createTaskDto.Priority, out TaskPriority priority))
+            {
+                return BadRequest("Invalid priority value.");
+            }
+
+            // Convert string to enum for Status
+            if (!Enum.TryParse(createTaskDto.Status, out Enums.TaskStatus status))
+            {
+                return BadRequest("Invalid status value.");
+            }
+
             var task = new TaskEntity
             {
                 UserId = userId,
                 Title = createTaskDto.Title,
                 Description = createTaskDto.Description,
                 DueDate = createTaskDto.DueDate,
-                Priority = createTaskDto.Priority,
-                Status = createTaskDto.Status,
+                Priority = priority,  // Use the converted enum value
+                Status = status,      // Use the converted enum value
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -105,7 +118,7 @@ namespace WebApiExam.Controllers
         // PUT: /Tasks/{id}
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int id, UpdateTaskDto UpdateTaskDto)
+        public async Task<IActionResult> UpdateTask(int id, UpdateTaskDto updateTaskDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -118,11 +131,29 @@ namespace WebApiExam.Controllers
                 return NotFound();
             }
 
-            task.Title = UpdateTaskDto.Title;
-            task.Description = UpdateTaskDto.Description;
-            task.DueDate = UpdateTaskDto.DueDate;
-            task.Priority = UpdateTaskDto.Priority;
-            task.Status = UpdateTaskDto.Status;
+            task.Title = updateTaskDto.Title;
+            task.Description = updateTaskDto.Description;
+            task.DueDate = updateTaskDto.DueDate;
+
+            // Convert string to enum
+            if (Enum.TryParse(updateTaskDto.Priority, out TaskPriority priority))
+            {
+                task.Priority = priority;
+            }
+            else
+            {
+                return BadRequest("Invalid priority value.");
+            }
+
+            if (Enum.TryParse(updateTaskDto.Status, out Enums.TaskStatus status))
+            {
+                task.Status = status;
+            }
+            else
+            {
+                return BadRequest("Invalid status value.");
+            }
+
             task.UpdatedAt = DateTime.UtcNow;
 
             _context.Entry(task).State = EntityState.Modified;
