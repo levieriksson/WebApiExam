@@ -101,5 +101,65 @@ namespace WebApiExam.Controllers
                 Status = task.Status
             });
         }
+
+        // PUT: /Tasks/{id}
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTask(int id, UpdateTaskDto UpdateTaskDto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var task = await _context.Tasks
+                                     .Where(t => t.TaskId == id && t.UserId == userId)
+                                     .FirstOrDefaultAsync();
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            task.Title = UpdateTaskDto.Title;
+            task.Description = UpdateTaskDto.Description;
+            task.DueDate = UpdateTaskDto.DueDate;
+            task.Priority = UpdateTaskDto.Priority;
+            task.Status = UpdateTaskDto.Status;
+            task.UpdatedAt = DateTime.UtcNow;
+
+            _context.Entry(task).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new TaskDto
+            {
+                TaskId = task.TaskId,
+                Title = task.Title,
+                Description = task.Description,
+                DueDate = task.DueDate,
+                Priority = task.Priority,
+                Status = task.Status
+            });
+        }
+
+        // DELETE: /Tasks/{id}
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTask(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var task = await _context.Tasks
+                                     .Where(t => t.TaskId == id && t.UserId == userId)
+                                     .FirstOrDefaultAsync();
+
+            if (task == null)
+            {
+                return NotFound(new { message = "Task not found" });
+            }
+
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Task deleted successfully" });
+        }
+
     }
 }
