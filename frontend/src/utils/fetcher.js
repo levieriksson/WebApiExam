@@ -5,7 +5,7 @@ const fetcher = async (url, options = {}) => {
   const token = Cookies.get('token');
   const headers = {
     'Authorization': token ? `Bearer ${token}` : '',
-    ...options.headers
+    ...options.headers,
   };
 
   if (!(options.body instanceof FormData)) {
@@ -24,6 +24,27 @@ const fetcher = async (url, options = {}) => {
   }
 
   return response.json();
+};
+
+export const fetchBinary = async (url, options = {}) => {
+  const token = Cookies.get('token');
+  const headers = {
+    'Authorization': token ? `Bearer ${token}` : '',
+    ...options.headers,
+  };
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+    ...options,
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.text();
+    console.error('Fetch error:', errorDetail);
+    throw new Error('An error occurred while fetching the data.');
+  }
+
+  return response; // Return the full response object
 };
 
 export default fetcher;

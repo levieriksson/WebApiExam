@@ -1,12 +1,15 @@
+// pages/files/index.js
 'use client';
+
 import React, { useState, useEffect } from 'react';
-import fetcher from '@/utils/fetcher';
+import fetcher, { fetchBinary } from '@/utils/fetcher';
 import styles from './Files.module.css';
 
 const FilesPage = () => {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [dragging, setDragging] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -16,6 +19,7 @@ const FilesPage = () => {
         console.log('Fetched files:', response);
       } catch (error) {
         console.error('Error fetching files:', error.message);
+        setError(error.message);
       }
     };
     fetchFiles();
@@ -37,6 +41,7 @@ const FilesPage = () => {
       setFiles(response);
     } catch (error) {
       console.error('Error uploading file:', error.message);
+      setError(error.message);
     }
   };
 
@@ -56,20 +61,21 @@ const FilesPage = () => {
     setSelectedFile(file);
   };
 
-  const handleFileDownload = async (fileId) => {
+  const handleFileDownload = async (fileId, filename) => {
     try {
-      const response = await fetcher(`/files/download/${fileId}`);
+      const response = await fetchBinary(`/files/download/${fileId}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = response.headers.get('Content-Disposition').split('filename=')[1];
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Download error:', error.message);
+      setError(error.message);
     }
   };
 
@@ -82,6 +88,7 @@ const FilesPage = () => {
   return (
     <div className={styles.container}>
       <h1>Files</h1>
+      {error && <p>Error: {error}</p>}
       <div className={styles.uploadControls}>
         <label htmlFor="fileInput" className={styles.uploadButton}>
           Choose File
@@ -113,7 +120,7 @@ const FilesPage = () => {
               <span className={styles.fileSize}>{formatFileSize(file.fileSize)}</span>
               <span className={styles.fileType}>{file.fileType}</span>
               <button
-                onClick={() => handleFileDownload(file.fileId)}
+                onClick={() => handleFileDownload(file.fileId, file.filename)}
                 className={styles.downloadButton}
               >
                 Download

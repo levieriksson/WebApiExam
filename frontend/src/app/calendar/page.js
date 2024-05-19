@@ -1,3 +1,4 @@
+// pages/calendar/index.js
 'use client';
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
@@ -40,6 +41,20 @@ const CalendarPage = () => {
         }
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const formattedDate = date.toISOString().slice(0, 10); // "YYYY-MM-DD"
+        const formattedTime = date.toTimeString().slice(0, 5); // "HH:mm"
+        return `${formattedDate} ${formattedTime}`;
+    };
+
+    const formatHeaderDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     return (
         <div className={styles.container}>
             <h1>Calendar</h1>
@@ -52,13 +67,13 @@ const CalendarPage = () => {
                 />
             </div>
             <div className={styles.tasksList}>
-                <h2>Tasks for {selectedDate.toDateString()}</h2>
+                <h2>Tasks for {formatHeaderDate(selectedDate)}</h2>
                 {selectedTasks.length > 0 ? (
                     selectedTasks.map((task) => (
                         <div key={task.taskId} className={styles.taskItem}>
                             <p><strong>Title:</strong> {task.title}</p>
                             <p><strong>Description:</strong> {task.description}</p>
-                            <p><strong>Due Date:</strong> {new Date(task.dueDate).toLocaleString()}</p>
+                            <p><strong>Due Date:</strong> {formatDate(task.dueDate)}</p>
                             <p><strong>Priority:</strong> {task.priority}</p>
                             <p><strong>Status:</strong> {task.status}</p>
                         </div>
