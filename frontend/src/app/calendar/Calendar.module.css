@@ -20,6 +20,7 @@
     line-height: 1.125em;
 }
 
+
 .tasksList {
     text-align: left;
     margin-top: 20px;
@@ -74,12 +75,12 @@
     width: 100%;
     max-width: 600px;
     background-color: #f9f9f9;
-    text-align: left; /* Ensure form text is left-aligned */
+    text-align: left;
 }
 
 .formGroup {
     margin-bottom: 15px;
-    text-align: left; /* Ensure text is left-aligned */
+    text-align: right;
 }
 
 .formLabel {
