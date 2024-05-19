@@ -19,7 +19,7 @@ const CalendarPage = () => {
             try {
                 const response = await fetcher('/tasks');
                 setTasks(response);
-                console.log('Fetched tasks:', response);
+                
             } catch (error) {
                 console.error('Error fetching tasks:', error.message);
             }

@@ -1,3 +1,4 @@
+// TaskList.js
 import React from 'react';
 import styles from '../app/tasks/Tasks.module.css'; // Import CSS module
 
@@ -9,6 +10,12 @@ const formatDate = (dateString) => {
 };
 
 const TaskList = ({ tasks, onEdit, onDelete, onComplete }) => {
+  const handleDelete = (taskId) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      onDelete(taskId);
+    }
+  };
+
   return (
     <table className={styles.table}>
       <thead>
@@ -26,18 +33,14 @@ const TaskList = ({ tasks, onEdit, onDelete, onComplete }) => {
             <td>{task.priority}</td>
             <td>{formatDate(task.dueDate)}</td>
             <td>
-              {task.status !== 'Completed' && (
-                <>
-                  <button onClick={() => onEdit(task)} className={styles.editButton}>
-                    Edit
-                  </button>
-                  <button onClick={() => onComplete(task.taskId)} className={styles.completeButton}>
-                    Complete
-                  </button>
-                </>
-              )}
-              <button onClick={() => onDelete(task.taskId)} className={styles.deleteButton}>
+              <button onClick={() => onEdit(task)} className={styles.editButton}>
+                Edit
+              </button>
+              <button onClick={() => handleDelete(task.taskId)} className={styles.deleteButton}>
                 Delete
+              </button>
+              <button onClick={() => onComplete(task)} className={styles.completeButton}>
+                Complete
               </button>
             </td>
           </tr>

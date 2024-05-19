@@ -6,6 +6,17 @@
     text-align: center;
 }
 
+.container h1{
+    font-size: 1.5em;
+    padding: 5px;
+    font-weight: 500;
+}
+
+.container h2{
+    font-size: 1em;
+    font-weight: 500;
+}
+
 .calendar {
     display: flex;
     justify-content: center;

@@ -1,34 +1,40 @@
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import styles from './NavBar.module.css';
 
 const NavBar = () => {
   const { isAuthenticated, logout } = useAuth();
+  const router = useRouter();
+
+  const getLinkClassName = (path) => {
+    return router.pathname === path ? `${styles.navLink} ${styles.active}` : styles.navLink;
+  };
 
   return (
     <nav className={styles.navbar}>
       <h2>Navigation Bar</h2>
       <ul className={styles.navLinks}>
         <li>
-          <Link href="/" className={styles.navLink}>
-            Home
+          <Link href="/" legacyBehavior>
+            <a className={getLinkClassName('/')}>Home</a>
           </Link>
         </li>
         {isAuthenticated && (
           <>
             <li>
-              <Link href="/tasks" className={styles.navLink}>
-                Tasks
+              <Link href="/tasks" legacyBehavior>
+                <a className={getLinkClassName('/tasks')}>Tasks</a>
               </Link>
             </li>
             <li>
-              <Link href="/files" className={styles.navLink}>
-                Files
+              <Link href="/files" legacyBehavior>
+                <a className={getLinkClassName('/files')}>Files</a>
               </Link>
             </li>
             <li>
-              <Link href="/calendar" className={styles.navLink}>
-                Calendar
+              <Link href="/calendar" legacyBehavior>
+                <a className={getLinkClassName('/calendar')}>Calendar</a>
               </Link>
             </li>
           </>

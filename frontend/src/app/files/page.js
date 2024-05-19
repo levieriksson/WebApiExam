@@ -16,7 +16,7 @@ const FilesPage = () => {
       try {
         const response = await fetcher('/files');
         setFiles(response);
-        console.log('Fetched files:', response);
+        
       } catch (error) {
         console.error('Error fetching files:', error.message);
         setError(error.message);

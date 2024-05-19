@@ -5,6 +5,19 @@
   padding: 20px;
 }
 
+.container h1{
+  font-size: 1.5em;
+  padding: 5px;
+  color: black;
+  font-weight: 500;
+}
+
+.container h2{
+  font-size: 1.25em;
+  padding: px;
+  font-weight: 400;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -26,15 +39,16 @@
 }
 
 .editButton {
-  background-color: #4CAF50;
+  background-color: #1976D2;
   color: white;
   padding: 5px 10px;
   border: none;
   cursor: pointer;
+  border-radius: 4px
 }
 
 .editButton:hover {
-  background-color: #45a049;
+  background-color: #1976D2;
 }
 
 .deleteButton {
@@ -44,6 +58,7 @@
   border: none;
   cursor: pointer;
   margin-left: 5px;
+  border-radius: 4px
 }
 
 .deleteButton:hover {
@@ -51,26 +66,29 @@
 }
 
 .completeButton {
-  background-color: #2196F3; /* Blue */
+  background-color: #4CAF50; /* Blue */
   color: white;
   padding: 5px 10px;
   border: none;
   cursor: pointer;
   margin-left: 5px;
+  border-radius: 4px;
 }
 
 .completeButton:hover {
-  background-color: #1976D2; /* Darker blue */
+  background-color: #45a049; /* Darker blue */
 }
 
 .formContainer {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 5px;
+  
 }
 
 .formGroup {
   margin-bottom: 15px;
+  margin-top: 10px;
 }
 
 .formLabel {
@@ -78,6 +96,7 @@
   margin-bottom: 5px;
   font-weight: bold;
   text-align: left;
+  font-weight: 500;
 }
 
 .formInput {
@@ -104,8 +123,18 @@
 
 .completedTasksHeading {
   margin-top: 20px;
+  color: black;
+
 }
 
 .completedTasksList {
   margin-top: 5px;
+  color: gray;
+}
+
+.completedTasksList .table th,
+.completedTasksList .table td {
+  color: gray; /* Apply gray color to the text in table headers and cells */
+  
+
 }
