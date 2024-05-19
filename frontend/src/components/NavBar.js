@@ -28,6 +28,11 @@ const NavBar = () => {
                 Files
               </Link>
             </li>
+            <li>
+              <Link href="/calendar" className={styles.navLink}>
+                Calendar
+              </Link>
+            </li>
           </>
         )}
       </ul>
