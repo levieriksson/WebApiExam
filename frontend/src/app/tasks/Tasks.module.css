@@ -37,6 +37,32 @@
   background-color: #45a049;
 }
 
+.deleteButton {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.deleteButton:hover {
+  background-color: #d32f2f;
+}
+
+.completeButton {
+  background-color: #2196F3; /* Blue */
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.completeButton:hover {
+  background-color: #1976D2; /* Darker blue */
+}
+
 .formContainer {
   background-color: #f9f9f9;
   padding: 20px;
@@ -75,16 +101,10 @@
   background-color: #45a049;
 }
 
-/* tasks/Tasks.module.css */
-.deleteButton {
-  background-color: #f44336;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  cursor: pointer;
-  margin-left: 5px;
+.completedTasksHeading {
+  margin-top: 20px;
 }
 
-.deleteButton:hover {
-  background-color: #d32f2f;
+.completedTasksList {
+  margin-top: 5px;
 }

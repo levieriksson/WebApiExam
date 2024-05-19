@@ -1,6 +1,5 @@
-
 import React from 'react';
-import styles from '../app/tasks/Tasks.module.css';
+import styles from '../app/tasks/Tasks.module.css'; // Import CSS module
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -9,7 +8,7 @@ const formatDate = (dateString) => {
   return `${formattedDate} ${formattedTime}`;
 };
 
-const TaskList = ({ tasks, onEdit, onDelete }) => {
+const TaskList = ({ tasks, onEdit, onDelete, onComplete }) => {
   return (
     <table className={styles.table}>
       <thead>
@@ -27,9 +26,16 @@ const TaskList = ({ tasks, onEdit, onDelete }) => {
             <td>{task.priority}</td>
             <td>{formatDate(task.dueDate)}</td>
             <td>
-              <button onClick={() => onEdit(task)} className={styles.editButton}>
-                Edit
-              </button>
+              {task.status !== 'Completed' && (
+                <>
+                  <button onClick={() => onEdit(task)} className={styles.editButton}>
+                    Edit
+                  </button>
+                  <button onClick={() => onComplete(task.taskId)} className={styles.completeButton}>
+                    Complete
+                  </button>
+                </>
+              )}
               <button onClick={() => onDelete(task.taskId)} className={styles.deleteButton}>
                 Delete
               </button>
@@ -42,6 +48,3 @@ const TaskList = ({ tasks, onEdit, onDelete }) => {
 };
 
 export default TaskList;
-
-
-

@@ -1,30 +1,44 @@
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import TaskList from '../../components/TaskList';
 import AddTaskForm from '../../components/AddTaskForm';
-import styles from './Tasks.module.css';
+import styles from './Tasks.module.css'; // Import CSS module
 import fetcher from '../../utils/fetcher';
 
 const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
   const [error, setError] = useState(null);
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const data = await fetcher('/tasks');
-        setTasks(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
     fetchTasks();
   }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const data = await fetcher('/tasks');
+      
+
+      const currentUtcDate = new Date(new Date().toUTCString());
+      const currentTasks = data.filter((task) => task.status !== 'Completed');
+      const completed = data.filter((task) => {
+        if (!task.updatedAt) return false;
+        const updatedAtDate = new Date(task.updatedAt);
+        const sevenDaysAgo = new Date(currentUtcDate);
+        sevenDaysAgo.setDate(currentUtcDate.getDate() - 7);
+        
+        return task.status === 'Completed' && updatedAtDate > sevenDaysAgo;
+      });
+
+      setTasks(currentTasks);
+      setCompletedTasks(completed);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   const handleToggleAddTaskForm = () => {
     setShowAddTaskForm(!showAddTaskForm);
@@ -37,9 +51,7 @@ const TasksPage = () => {
   };
 
   const handleTaskUpdated = (updatedTask) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.taskId === updatedTask.taskId ? updatedTask : task))
-    );
+    fetchTasks();
     setTaskToEdit(null);
     setShowAddTaskForm(false);
   };
@@ -55,6 +67,32 @@ const TasksPage = () => {
         method: 'DELETE',
       });
       setTasks((prevTasks) => prevTasks.filter((task) => task.taskId !== taskId));
+      setCompletedTasks((prevTasks) => prevTasks.filter((task) => task.taskId !== taskId));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    try {
+      const task = tasks.find((t) => t.taskId === taskId);
+      if (!task) return;
+
+      const updatedTask = {
+        ...task,
+        status: 'Completed',
+        updatedAt: new Date().toISOString(), // Ensure updatedAt is set to the current date and time
+      };
+
+      await fetcher(`/tasks/${taskId}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedTask),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      fetchTasks();
     } catch (error) {
       setError(error.message);
     }
@@ -62,9 +100,9 @@ const TasksPage = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Tasks</h1>
+      <h1>Active</h1>
       {error && <p>Error: {error}</p>}
-      <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDeleteTask} />
+      <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDeleteTask} onComplete={handleCompleteTask} />
       <button onClick={handleToggleAddTaskForm} className={styles.formButton}>
         {showAddTaskForm ? 'Hide Form' : 'Add New Task'}
       </button>
@@ -75,6 +113,10 @@ const TasksPage = () => {
           onTaskUpdated={handleTaskUpdated}
         />
       )}
+      <h2 className={styles.completedTasksHeading}>Completed (Last 7 days)</h2>
+      <div className={styles.completedTasksList}>
+        <TaskList tasks={completedTasks} onDelete={handleDeleteTask} />
+      </div>
     </div>
   );
 };
