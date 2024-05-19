@@ -104,7 +104,7 @@ const TasksPage = () => {
       {error && <p>Error: {error}</p>}
       <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDeleteTask} onComplete={handleCompleteTask} />
       <button onClick={handleToggleAddTaskForm} className={styles.formButton}>
-        {showAddTaskForm ? 'Hide Form' : 'Add New Task'}
+        {showAddTaskForm ? 'Cancel' : 'Add Task'}
       </button>
       {showAddTaskForm && (
         <AddTaskForm
