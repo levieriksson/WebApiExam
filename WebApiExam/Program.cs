@@ -10,6 +10,7 @@ using System.Text;
 using WebApiExam.Contexts;
 using WebApiExam.Models.Entity;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,6 +93,12 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader()
                .AllowCredentials());
 });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 // Add controllers
 builder.Services.AddControllers();
