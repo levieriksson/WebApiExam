@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import fetcher from '../../utils/fetcher';
-import styles from '../tasks/Tasks.module.css'; // Import CSS module
+import styles from '../tasks/Tasks.module.css';
 import fetchdata from '@/utils/fetchdata';
 
 const Login = () => {
@@ -24,7 +24,7 @@ const Login = () => {
         body: JSON.stringify(loginData),
       });
 
-      // Handle successful login, e.g., store token, redirect, etc.
+      
     } catch (error) {
       setError(error.message);
     }

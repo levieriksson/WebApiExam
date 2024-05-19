@@ -1,4 +1,4 @@
-// pages/calendar/index.js
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -66,7 +66,7 @@ const CalendarPage = () => {
 
     const handleTaskAdded = (newTask) => {
         setTasks((prevTasks) => [...prevTasks, newTask]);
-        setShowAddTaskForm(false); // Hide form after adding a task
+        setShowAddTaskForm(false);
     };
 
     return (
@@ -77,7 +77,7 @@ const CalendarPage = () => {
                     onChange={handleDateChange}
                     value={selectedDate}
                     tileClassName={tileClassName}
-                    style={{ width: '700px' }} // Set the width directly here
+                    style={{ width: '700px' }}
                 />
             </div>
             <button onClick={handleToggleAddTaskForm} className={styles.formButton}>

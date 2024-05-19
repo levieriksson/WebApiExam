@@ -1,4 +1,3 @@
-// src/components/AuthGuard.js
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
@@ -15,7 +14,7 @@ const AuthGuard = ({ children }) => {
   }, [isInitialized, isAuthenticated, router]);
 
   if (!isInitialized) {
-    return null; // Or a loading spinner
+    return null;
   }
 
   return isAuthenticated ? children : <LoginPage />;

@@ -1,4 +1,4 @@
-// src/utils/fetcher.js
+
 import Cookies from 'js-cookie';
 
 const fetcher = async (url, options = {}) => {
@@ -44,7 +44,7 @@ export const fetchBinary = async (url, options = {}) => {
     throw new Error('An error occurred while fetching the data.');
   }
 
-  return response; // Return the full response object
+  return response;
 };
 
 export default fetcher;

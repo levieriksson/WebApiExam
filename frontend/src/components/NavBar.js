@@ -1,5 +1,3 @@
-// src/components/NavBar.js
-import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import styles from './NavBar.module.css';
