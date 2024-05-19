@@ -1,3 +1,4 @@
+// src/app/tasks/page.js
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -20,7 +21,6 @@ const TasksPage = () => {
   const fetchTasks = async () => {
     try {
       const data = await fetcher('/tasks');
-      
 
       const currentUtcDate = new Date(new Date().toUTCString());
       const currentTasks = data.filter((task) => task.status !== 'Completed');
@@ -29,7 +29,7 @@ const TasksPage = () => {
         const updatedAtDate = new Date(task.updatedAt);
         const sevenDaysAgo = new Date(currentUtcDate);
         sevenDaysAgo.setDate(currentUtcDate.getDate() - 7);
-        
+
         return task.status === 'Completed' && updatedAtDate > sevenDaysAgo;
       });
 
@@ -81,7 +81,7 @@ const TasksPage = () => {
       const updatedTask = {
         ...task,
         status: 'Completed',
-        updatedAt: new Date().toISOString(), // Ensure updatedAt is set to the current date and time
+        updatedAt: new Date().toISOString(),
       };
 
       await fetcher(`/tasks/${taskId}`, {

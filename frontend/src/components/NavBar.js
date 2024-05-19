@@ -16,7 +16,7 @@ const NavBar = () => {
       <h2>Navigation Bar</h2>
       <ul className={styles.navLinks}>
         <li>
-          <Link href="/" legacyBehavior>
+          <Link href="/home" legacyBehavior>
             <a className={getLinkClassName('/')}>Home</a>
           </Link>
         </li>

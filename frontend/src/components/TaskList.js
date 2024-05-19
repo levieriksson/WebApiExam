@@ -33,14 +33,18 @@ const TaskList = ({ tasks, onEdit, onDelete, onComplete }) => {
             <td>{task.priority}</td>
             <td>{formatDate(task.dueDate)}</td>
             <td>
-              <button onClick={() => onEdit(task)} className={styles.editButton}>
-                Edit
-              </button>
+              {task.status !== 'Completed' && (
+                <>
+                  <button onClick={() => onEdit(task)} className={styles.editButton}>
+                    Edit
+                  </button>
+                  <button onClick={() => onComplete(task.taskId)} className={styles.completeButton}>
+                    Complete
+                  </button>
+                </>
+              )}
               <button onClick={() => handleDelete(task.taskId)} className={styles.deleteButton}>
                 Delete
-              </button>
-              <button onClick={() => onComplete(task)} className={styles.completeButton}>
-                Complete
               </button>
             </td>
           </tr>

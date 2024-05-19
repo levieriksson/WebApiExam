@@ -1,6 +1,5 @@
-
+// src/app/calendar/page.js
 'use client';
-
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import fetcher from '@/utils/fetcher';
@@ -19,7 +18,6 @@ const CalendarPage = () => {
             try {
                 const response = await fetcher('/tasks');
                 setTasks(response);
-                
             } catch (error) {
                 console.error('Error fetching tasks:', error.message);
             }
@@ -105,4 +103,3 @@ const CalendarPage = () => {
 };
 
 export default CalendarPage;
-

@@ -1,4 +1,4 @@
-// src/app/page.js
+// src/app/home/page.js
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -8,18 +8,17 @@ import notify from '@/utils/NotificationManager';
 import fetcher from '@/utils/fetcher';
 
 const HomePage = () => {
-  const [currentDate, setCurrentDate] = useState('');
-  const [currentTime, setCurrentTime] = useState('');
+  const [currentDateTime, setCurrentDateTime] = useState('');
   const [upcomingTasks, setUpcomingTasks] = useState([]);
   const [username, setUsername] = useState('Levi');
+  const [countdowns, setCountdowns] = useState({});
   const notifiedTasks = useRef(new Set());
 
   useEffect(() => {
     const now = new Date();
     const formattedDate = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
     const formattedTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-    setCurrentDate(formattedDate);
-    setCurrentTime(`${formattedTime}`);
+    setCurrentDateTime(`${formattedDate}, ${formattedTime}`);
 
     const fetchTasks = async () => {
       try {
@@ -57,18 +56,43 @@ const HomePage = () => {
     fetchTasks();
   }, []);
 
+  useEffect(() => {
+    const calculateCountdown = (dueDate) => {
+      const now = new Date();
+      const timeDiff = new Date(dueDate) - now;
+      if (timeDiff <= 0) {
+        return 'Expired';
+      }
+      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+      return `${hours}h ${minutes}m ${seconds}s`;
+    };
+
+    const updateCountdowns = () => {
+      const newCountdowns = {};
+      upcomingTasks.forEach(task => {
+        newCountdowns[task.taskId] = calculateCountdown(task.dueDate);
+      });
+      setCountdowns(newCountdowns);
+    };
+
+    const interval = setInterval(updateCountdowns, 1000);
+    return () => clearInterval(interval);
+  }, [upcomingTasks]);
+
   return (
     <div className={styles.container}>
       <div className={styles.centerContent}>
         <h1>Welcome {username}</h1>
-        <p className={styles.currentDate}>{currentDate}</p>
-        <p className={styles.currentTime}>{currentTime}</p>
+        <p>{currentDateTime}</p>
         <h2>Upcoming Deadlines</h2>
         {upcomingTasks.length > 0 ? (
           <ul className={styles.taskList}>
             {upcomingTasks.map(task => (
               <li key={task.taskId} className={styles.taskItem}>
-                <strong>{task.title}</strong> - {new Date(task.dueDate).toLocaleDateString('en-CA')} {new Date(task.dueDate).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                <strong>{task.title}</strong> - {new Date(task.dueDate).toLocaleDateString('sv-SE')} {new Date(task.dueDate).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })} <br />
+                <span className={styles.countdown}>Time left: {countdowns[task.taskId]}</span>
               </li>
             ))}
           </ul>

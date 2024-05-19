@@ -110,9 +110,9 @@
 }
 
 .filterButton:hover {
-    background-color: #0056b3;
+    background-color: #001f41;
 }
 
 .activeFilter {
-    background-color: #0056b3;
+    background-color: #001f41;
 }

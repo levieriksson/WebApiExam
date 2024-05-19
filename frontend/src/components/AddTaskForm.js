@@ -1,10 +1,8 @@
-'use client';
-
+// AddTaskForm.js
 import React, { useState, useEffect } from 'react';
-import fetcher from '../utils/fetcher';
 import styles from '../app/tasks/Tasks.module.css';
 
-const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated }) => {
+const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated, defaultDate }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -17,6 +15,10 @@ const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated }) => {
       setDescription(taskToEdit.description);
       setDueDate(new Date(taskToEdit.dueDate).toISOString().substring(0, 16));
       setPriority(taskToEdit.priority);
+    } else if (defaultDate) {
+      const placeholderTime = 'T14:00';
+      const dateStr = defaultDate.toISOString().split('T')[0];
+      setDueDate(`${dateStr}${placeholderTime}`);
     } else {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -24,7 +26,7 @@ const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated }) => {
       const dateStr = tomorrow.toISOString().split('T')[0];
       setDueDate(`${dateStr}${placeholderTime}`);
     }
-  }, [taskToEdit]);
+  }, [taskToEdit, defaultDate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,14 +41,12 @@ const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated }) => {
 
     try {
       if (taskToEdit) {
-        
         const response = await fetcher(`/tasks/${taskToEdit.taskId}`, {
           method: 'PUT',
           body: JSON.stringify(newTask),
         });
         onTaskUpdated(response);
       } else {
-        
         const response = await fetcher('/tasks', {
           method: 'POST',
           body: JSON.stringify(newTask),

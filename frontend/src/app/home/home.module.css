@@ -36,6 +36,8 @@
   list-style: none;
   padding: 0;
   margin-top: 10px; /* Add some margin to space out the list */
+  width: 400px;
+  text-align: center;
 }
 
 .taskItem {
@@ -44,10 +46,16 @@
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.5em;
 }
 
 /* src/app/home/home.module.css */
 .toast-warning {
   background-color: red !important;
   color: white !important;
+}
+
+.container p{
+  color: black;
+  font-size: 4em;
 }
