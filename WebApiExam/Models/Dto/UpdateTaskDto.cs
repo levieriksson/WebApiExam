@@ -8,5 +8,7 @@
         public string Priority { get; set; }
         public string Status { get; set; }
 
-    }
+        public DateTime UpdatedAt {get; set; }
+
+}
 }

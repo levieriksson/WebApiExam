@@ -37,7 +37,8 @@ namespace WebApiExam.Controllers
                                           Description = t.Description,
                                           DueDate = t.DueDate,
                                           Priority = t.Priority,
-                                          Status = t.Status
+                                          Status = t.Status,
+                                          UpdatedAt = t.UpdatedAt
                                       }).ToListAsync();
 
             return Ok(tasks);
