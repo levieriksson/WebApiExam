@@ -44,8 +44,11 @@
     text-align: left;
 }
 
+.react-calendar__tile--now{
+    background: gray !important;
+}
 .highlight {
-    border: 2px solid red !important;
+    border: 2px solid black!important;
 }
 
 .formButton {
