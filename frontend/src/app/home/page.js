@@ -3,9 +3,9 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer } from 'react-toastify';
-import styles from '../app/home/home.module.css';
-import notify from '../utils/NotificationManager';
-import fetcher from '../utils/fetcher';
+import styles from '@/app/home/home.module.css';
+import notify from '@/utils/NotificationManager';
+import fetcher from '@/utils/fetcher';
 
 const HomePage = () => {
   const [currentDate, setCurrentDate] = useState('');

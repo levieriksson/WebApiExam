@@ -1,0 +1,53 @@
+/* src/app/home/home.module.css */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 10px; /* Reduced padding to move content up */
+  text-align: center;
+}
+
+.centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container h1 {
+  margin-top: 40px;
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.container p {
+  font-size: 3em;
+  color: #666;
+}
+
+.container h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  margin-top: 40px;
+}
+
+.taskList {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px; /* Add some margin to space out the list */
+}
+
+.taskItem {
+  background: #f9f9f9;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* src/app/home/home.module.css */
+.toast-warning {
+  background-color: red !important;
+  color: white !important;
+}

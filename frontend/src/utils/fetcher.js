@@ -1,4 +1,4 @@
-
+// src/utils/fetcher.js
 import Cookies from 'js-cookie';
 
 const fetcher = async (url, options = {}) => {

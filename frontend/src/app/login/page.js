@@ -26,7 +26,7 @@ const LoginPage = () => {
 
       Cookies.set('token', response.token);
       setIsAuthenticated(true);
-      router.push('/tasks');
+      router.push('/home');
       console.log('Login successful');
     } catch (error) {
       console.error('Login error:', error.message);
