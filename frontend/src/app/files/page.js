@@ -96,7 +96,7 @@ const FilesPage = () => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <p>Drag & Drop files here or click to select files</p>
+        <p>Drag & Drop files here</p>
         {selectedFile && <p>Selected file: {selectedFile.name}</p>}
         <input
           type="file"
