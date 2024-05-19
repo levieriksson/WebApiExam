@@ -23,10 +23,10 @@ const HomePage = () => {
     const fetchTasks = async () => {
       try {
         const tasks = await fetcher('/tasks');
-        console.log('Fetched tasks:', tasks);
+        
 
         const activeTasks = tasks.filter(task => task.status !== 'Completed');
-        console.log('Active tasks:', activeTasks);
+        
 
         const upcoming = [];
 
@@ -37,7 +37,7 @@ const HomePage = () => {
           const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
           if (daysDiff <= 2 && !notifiedTasks.current.has(task.taskId)) {
-            console.log(`Task "${task.title}" has an upcoming deadline on ${dueDate.toLocaleString('en-US', { hour12: false })}`);
+            
             notify(`Upcoming deadline for task: ${task.title} on ${dueDate.toLocaleString('en-US', { hour12: false })}`);
             notifiedTasks.current.add(task.taskId);
           }
@@ -46,7 +46,7 @@ const HomePage = () => {
           }
         });
 
-        console.log('Upcoming tasks:', upcoming);
+        
         setUpcomingTasks(upcoming);
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -83,6 +83,7 @@ const HomePage = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.background}></div>
       <div className={styles.centerContent}>
         <h1>Welcome {username}</h1>
         <p>{currentDateTime}</p>

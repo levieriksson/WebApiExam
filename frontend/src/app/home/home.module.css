@@ -1,11 +1,20 @@
 /* src/app/home/home.module.css */
 .container {
-  max-width: 800px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
-  padding-top: 10px; /* Reduced padding to move content up */
+  padding-top: 10px;
   text-align: center;
+  /* background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(234,249,249,0.67) 0.1%, rgba(239,249,251,0.63) 90.1% ); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  color: white;
+  filter:brightness(0.95)
 }
+
+
 
 .centerContent {
   display: flex;
@@ -17,45 +26,54 @@
   margin-top: 40px;
   font-size: 2em;
   font-weight: bold;
-  color: #333;
+  color: black;
 }
 
 .container p {
   font-size: 3em;
-  color: #666;
+  color: black;
 }
 
 .container h2 {
   font-size: 1.5em;
   font-weight: bold;
-  color: #333;
   margin-top: 40px;
+  color: black;
 }
 
 .taskList {
   list-style: none;
   padding: 0;
-  margin-top: 10px; /* Add some margin to space out the list */
+  margin-top: 10px;
   width: 400px;
   text-align: center;
 }
 
 .taskItem {
-  background: #f9f9f9;
+  background: rgba(249, 249, 249, 0.24);
   margin: 10px 0;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 1.5em;
+  color: white;
+  opacity: 100%;
 }
 
-/* src/app/home/home.module.css */
 .toast-warning {
   background-color: red !important;
   color: white !important;
 }
 
-.container p{
-  color: black;
+.container p {
   font-size: 4em;
+  color: black;
+}
+
+.taskList li{
+  color: black;
+}
+
+.taskList span{
+  color: black;
 }

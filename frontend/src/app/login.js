@@ -31,6 +31,7 @@ const Login = () => {
   };
 
   return (
+    
     <div className={styles.centeredFormContainer}>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <h1>Login</h1>

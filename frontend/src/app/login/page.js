@@ -1,3 +1,4 @@
+// src/app/login/page.js
 'use client';
 
 import React, { useState } from 'react';
@@ -5,7 +6,7 @@ import Cookies from 'js-cookie';
 import { useAuth } from '../../context/AuthContext';
 import fetcher from '../../utils/fetcher';
 import styles from './login.module.css';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -27,7 +28,6 @@ const LoginPage = () => {
       Cookies.set('token', response.token);
       setIsAuthenticated(true);
       router.push('/home');
-      console.log('Login successful');
     } catch (error) {
       console.error('Login error:', error.message);
       setError('Invalid email or password');
@@ -36,6 +36,8 @@ const LoginPage = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.background}></div>
+      <div className={styles.overlay}></div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <h1 className={styles.formTitle}>Login</h1>
         {error && <p className={styles.error}>{error}</p>}
