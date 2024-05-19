@@ -1,22 +1,34 @@
-
+// src/pages/files.js
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import fetcher, { fetchBinary } from '@/utils/fetcher';
 import styles from './Files.module.css';
 
+const fileTypeMapping = {
+  'image/png': 'Image',
+  'image/jpeg': 'Image',
+  'application/pdf': 'PDF',
+  'text/plain': 'Text',
+  'audio/mid' : 'MIDI',
+  'audio/mpeg':'MP3',
+  'application/octet-stream': 'Unknown'
+  
+};
+
 const FilesPage = () => {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [fileTypeFilter, setFileTypeFilter] = useState('');
 
   useEffect(() => {
     const fetchFiles = async () => {
       try {
         const response = await fetcher('/files');
         setFiles(response);
-        
       } catch (error) {
         console.error('Error fetching files:', error.message);
         setError(error.message);
@@ -85,6 +97,22 @@ const FilesPage = () => {
     else return `${(size / 1048576).toFixed(2)} MB`;
   };
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleFileTypeFilter = (type) => {
+    setFileTypeFilter(prevType => (prevType === type ? '' : type));
+  };
+
+  const filteredFiles = files.filter(file => {
+    const matchesSearchTerm = file.filename.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFileType = fileTypeFilter ? file.fileType === fileTypeFilter : true;
+    return matchesSearchTerm && matchesFileType;
+  });
+
+  const fileTypes = [...new Set(files.map(file => file.fileType))];
+
   return (
     <div className={styles.container}>
       <h1>Files</h1>
@@ -112,13 +140,34 @@ const FilesPage = () => {
           id="fileInput"
         />
       </div>
-      {files.length > 0 ? (
+      <div className={styles.searchControls}>
+        <input
+          type="text"
+          placeholder="Search files"
+          value={searchTerm}
+          onChange={handleSearch}
+          className={styles.searchInput}
+        />
+        <div className={styles.filterButtons}>
+          <button onClick={() => handleFileTypeFilter('')} className={styles.filterButton}>All</button>
+          {fileTypes.map(type => (
+            <button
+              key={type}
+              onClick={() => handleFileTypeFilter(type)}
+              className={`${styles.filterButton} ${fileTypeFilter === type ? styles.activeFilter : ''}`}
+            >
+              {fileTypeMapping[type] || type}
+            </button>
+          ))}
+        </div>
+      </div>
+      {filteredFiles.length > 0 ? (
         <ul className={styles.fileList}>
-          {files.map((file) => (
+          {filteredFiles.map((file) => (
             <li key={file.fileId} className={styles.fileItem}>
               <span className={styles.fileName}>{file.filename}</span>
               <span className={styles.fileSize}>{formatFileSize(file.fileSize)}</span>
-              <span className={styles.fileType}>{file.fileType}</span>
+              <span className={styles.fileType}>{fileTypeMapping[file.fileType] || file.fileType}</span>
               <button
                 onClick={() => handleFileDownload(file.fileId, file.filename)}
                 className={styles.downloadButton}

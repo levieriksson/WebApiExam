@@ -1,16 +1,17 @@
+
+
 .container {
     width: 50%;
     margin: 0 auto;
     padding: 20px;
 }
 
-.container h1{
+.container h1 {
     font-size: 1.5em;
     font-weight: 500;
     padding: 5px;
     color: black;
 }
-
 
 .dropzone {
     border: 2px dashed #007bff;
@@ -22,7 +23,7 @@
     cursor: pointer;
 }
 
-.dropzone:hover{
+.dropzone:hover {
     background-color: lightgray;
 }
 
@@ -79,4 +80,39 @@
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
+}
+
+.searchControls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.searchInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filterButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.filterButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filterButton:hover {
+    background-color: #0056b3;
+}
+
+.activeFilter {
+    background-color: #0056b3;
 }
