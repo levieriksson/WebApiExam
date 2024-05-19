@@ -81,14 +81,14 @@
 
 .formContainer {
   background-color: #f9f9f9;
-  padding: 20px;
+  padding: 0px;
   border-radius: 5px;
   
 }
 
 .formGroup {
   margin-bottom: 15px;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 
 .formLabel {

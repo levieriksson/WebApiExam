@@ -1,4 +1,3 @@
-// src/app/calendar/page.js
 'use client';
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
@@ -67,6 +66,13 @@ const CalendarPage = () => {
         setShowAddTaskForm(false);
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const formattedDate = date.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
+        const formattedTime = date.toTimeString().slice(0, 5); // Get the time part (HH:MM)
+        return `${formattedDate} ${formattedTime}`;
+    };
+
     return (
         <div className={styles.container}>
             <h1>Calendar</h1>
@@ -79,7 +85,7 @@ const CalendarPage = () => {
                 />
             </div>
             <button onClick={handleToggleAddTaskForm} className={styles.formButton}>
-                {showAddTaskForm ? 'Hide Form' : 'Add New Task'}
+                {showAddTaskForm ? 'Cancel' : 'Add Task'}
             </button>
             {showAddTaskForm && <AddTaskForm onTaskAdded={handleTaskAdded} defaultDate={selectedDate} />}
             <div className={styles.tasksList}>
@@ -89,7 +95,7 @@ const CalendarPage = () => {
                         <div key={task.taskId} className={styles.taskItem}>
                             <p><strong>Title:</strong> {task.title}</p>
                             <p><strong>Description:</strong> {task.description}</p>
-                            <p><strong>Due Date:</strong> {new Date(task.dueDate).toLocaleString()}</p>
+                            <p><strong>Due Date:</strong> {formatDate(task.dueDate)}</p>
                             <p><strong>Priority:</strong> {task.priority}</p>
                             <p><strong>Status:</strong> {task.status}</p>
                         </div>

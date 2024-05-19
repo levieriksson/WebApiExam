@@ -1,5 +1,8 @@
-// AddTaskForm.js
+// src/components/AddTaskForm.js
+'use client';
+
 import React, { useState, useEffect } from 'react';
+import fetcher from '../utils/fetcher';
 import styles from '../app/tasks/Tasks.module.css';
 
 const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated, defaultDate }) => {
@@ -15,15 +18,10 @@ const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated, defaultDate }) =>
       setDescription(taskToEdit.description);
       setDueDate(new Date(taskToEdit.dueDate).toISOString().substring(0, 16));
       setPriority(taskToEdit.priority);
-    } else if (defaultDate) {
-      const placeholderTime = 'T14:00';
-      const dateStr = defaultDate.toISOString().split('T')[0];
-      setDueDate(`${dateStr}${placeholderTime}`);
     } else {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      const defaultDateTime = defaultDate || new Date();
       const placeholderTime = 'T14:00';
-      const dateStr = tomorrow.toISOString().split('T')[0];
+      const dateStr = defaultDateTime.toISOString().split('T')[0];
       setDueDate(`${dateStr}${placeholderTime}`);
     }
   }, [taskToEdit, defaultDate]);
@@ -65,7 +63,6 @@ const AddTaskForm = ({ onTaskAdded, taskToEdit, onTaskUpdated, defaultDate }) =>
 
   return (
     <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <h2>{taskToEdit ? 'Edit Task' : 'Add New Task'}</h2>
       {error && <p>Error: {error}</p>}
       <div className={styles.formGroup}>
         <label className={styles.formLabel}>Title</label>
