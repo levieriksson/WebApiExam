@@ -5,7 +5,7 @@
   padding: 20px;
   padding-top: 10px;
   text-align: center;
-  /* background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(234,249,249,0.67) 0.1%, rgba(239,249,251,0.63) 90.1% ); */
+  background-image: radial-gradient( circle farthest-corner at 48.8% 52%,  rgba(15,13,58,1) 0.1%, rgba(10,14,42,1) 100.2% );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -26,7 +26,7 @@
   margin-top: 40px;
   font-size: 2em;
   font-weight: bold;
-  color: black;
+  color: white;
 }
 
 .container p {
@@ -38,7 +38,7 @@
   font-size: 1.5em;
   font-weight: bold;
   margin-top: 40px;
-  color: black;
+  color: white;
 }
 
 .taskList {
@@ -58,6 +58,7 @@
   font-size: 1.5em;
   color: white;
   opacity: 100%;
+  
 }
 
 .toast-warning {
@@ -67,13 +68,13 @@
 
 .container p {
   font-size: 4em;
-  color: black;
+  color: white;
 }
 
 .taskList li{
-  color: black;
+  color: white;
 }
 
 .taskList span{
-  color: black;
+  color: white;
 }
